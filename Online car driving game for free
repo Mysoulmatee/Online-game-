@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Driving Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <canvas id="game-canvas"></canvas>
+    <script src="game.js"></script>
+</body>
+</html>
+body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #333;
+}
+
+#game-canvas {
+    border: 1px solid #000;
+}
+const canvas = document.getElementById("game-canvas");
+const context = canvas.getContext("2d");
+
+canvas.width = 800;
+canvas.height = 600;
+
+// Car properties
+const car = {
+    x: canvas.width / 2,
+    y: canvas.height - 50,
+    width: 50,
+    height: 30,
+    speed: 5
+};
+
+// Update and render functions
+function update() {
+    if (keys.ArrowLeft && car.x > 0) {
+        car.x -= car.speed;
+    }
+    if (keys.ArrowRight && car.x + car.width < canvas.width) {
+        car.x += car.speed;
+    }
+}
+
+function render() {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    context.fillStyle = "blue";
+    context.fillRect(car.x, car.y, car.width, car.height);
+}
+
+// Game loop
+function gameLoop() {
+    update();
+    render();
+    requestAnimationFrame(gameLoop);
+}
+
+// Keyboard input
+const keys = {};
+
+document.addEventListener("keydown", (event) => {
+    keys[event.key] = true;
+});
+
+document.addEventListener("keyup", (event) => {
+    keys[event.key] = false;
+});
+
+gameLoop();
